@@ -11,8 +11,12 @@ async function addUser(user) {
     //return await db('users').insert(user,['id','username'])
 }
 
+function findUserByUsername(username){
+    return db("users").where({username:username}).first(); 
+}
+
 
 module.exports={
-    addUser
+    addUser,findUserByUsername
 
 }
