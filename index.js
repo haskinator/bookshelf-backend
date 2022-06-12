@@ -8,11 +8,16 @@ const bcrypt = require('bcryptjs');
 app.use(express.json());
 
 app.get('/',(req,res)=>{
-    res.status(200).json({Message: 'Hello world'})
+    res.status(200).json({Message: 'Welcome to the server'})
 })
 
-app.get('/welcome',(req,res)=>{
-    res.status(200).json({Message: 'Welcome'})
+app.get('/users',(req,res)=>{
+    Bookshelf.getAllUsers()
+    .then(users=>{
+        res.status(200).json(users)
+    })
+    .catch(error=>{res.status(500).json(error)})
+    
 })
 
 
@@ -30,8 +35,13 @@ app.post('/users/register',(req,res)=>{
     .then(user=>{
         res.status(200).json(user)
     })
-    .catch(error=>{res.status(500).json(error)
-        })
+    .catch(error=>{
+        if(error.errno===19){
+          res.status(401).json({message:"Username already exists."})
+      }else{
+          res.status(500).json(error)
+      }
+      })
 
 })
 
@@ -46,10 +56,73 @@ app.post('/users/login',(req,res)=>{
         res.status(404).json({message:"User does not exist"})
       }
     })
-    .catch(err=>{
-      res.status(500).json(err)
+    .catch(error=>{
+      res.status(500).json(error)
     })
   })
+
+
+app.get('/users/:username',(req,res)=>{
+    const {username} = req.params
+    Bookshelf.findUserByUsername(username)
+    .then(user=>{
+        res.status(200).json(user)
+    })
+    .catch(error=>{
+        res.status(500).json(error)
+    })
+})
+
+app.delete("/users/:id",(req,res)=>{
+    const {id} = req.params
+    Bookshelf.removeUser(id)
+    .then(count=>{
+      if(count>0){
+        res.status(200).json({message:"User is deleted"})
+      }else{
+        res.status(404).json({message:"No user with that id"})
+      }
+    })
+    .catch(error=>{
+      res.status(500).json(error)
+    })
+})
+
+app.get('/users/:id/books',(req,res)=>{
+    const {id} = req.params
+    Bookshelf.getUserBooks(id)
+    .then(books=>{
+        res.status(200).json(books)
+    })
+    .catch(error=>{
+        res.status(500).json({Message: "Cannot get books"})
+    })
+})
+
+
+app.post('/users/:id/books',(req,res)=>{
+    const {id} = req.params
+    const newBook = req.body
+        if(!newBook.user_id){
+            newBook['user_id'] = parseInt(id,10)
+        }
+    
+    Bookshelf.findUserByUserId(id)
+    .then(user=>{
+        if(!user){
+            res.status(400).json({Message:"User does not exists"})
+        }
+        
+    Bookshelf.addBook(newBook,id)
+    .then(book=>{
+        res.status(200).json(book)
+    })
+    .catch(error=>{
+        res.status(500).json(error)
+    })
+    
+    })
+})
 
 app.listen(PORT,()=>{
     console.log('My server is running')
