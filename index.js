@@ -124,6 +124,30 @@ app.post('/users/:id/books',(req,res)=>{
     })
 })
 
+
+app.patch('/users/:id/books/:identifier',(req,res)=>{
+    const{id} = req.params
+    const{identifier} = req.params
+    const NewTag = req.body
+
+    Bookshelf.findUserByUserId(id)
+    .then(user=>{
+        if(!user){
+            res.status(400).json({Message:"User does not exists"})
+        }
+
+        Bookshelf.addTag(NewTag,id,identifier)
+        .then(book=>{
+            res.status(200).json(book.tag)
+        })
+        .catch(error=>{
+            res.status(500).json(error)
+        })
+    
+    })
+
+})
+
 app.listen(PORT,()=>{
     console.log('My server is running')
 })

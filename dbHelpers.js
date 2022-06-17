@@ -36,6 +36,7 @@ function getUserBooks(user_id) {
         'books.description as Description',
         'books.pages as PageNumber',
         'books.tag as UserTag',
+        'books.identifier as Identifier',
         'books.imageUrl as ImageUrl'
     )
     .where({user_id:user_id})
@@ -54,6 +55,16 @@ async function addBook(newBook,id) {
 
 }
 
+function addTag(NewTag,id,identifier) {
+    return db('books')
+    .where({
+        user_id:id,
+        identifier:identifier
+    })
+    .update(NewTag,['id'])
+
+}
+
 module.exports={
     addUser,
     findUserByUsername,
@@ -61,6 +72,7 @@ module.exports={
     removeUser,
     getUserBooks,
     findUserByUserId,
-    addBook
+    addBook,
+    addTag
 
 }
