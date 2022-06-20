@@ -1,8 +1,8 @@
-const knex = require('knex');
-const config = require('./knexfile')
-const db = knex(config.development)
+// const knex = require('knex');
+// const config = require('./knexfile')
+// const db = knex(config.development)
 
-//const db = require('./dbConfig');
+const db = require('./dbConfig');
 
 //USERS
 async function addUser(user) {

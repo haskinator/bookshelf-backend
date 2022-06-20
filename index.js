@@ -1,19 +1,20 @@
+require('dotenv').config()
 const express = require('express');
 const app = express();
-const PORT = 8000;
+const port = process.env.PORT || 8000 ;
 app.use(express.json());
 
 
-//Import routes
+//IMPORT ROUTES
 const userRouters = require('./routes/user-routes')
 
-//Use routes
+//USE ROUTES
 app.use('/',userRouters)
 
 app.get('/',(req,res)=>{
     res.status(200).json({Message: 'Welcome to the server'})
 })
 
-app.listen(PORT,()=>{
-    console.log('My server is running')
+app.listen(port,()=>{
+    console.log(`My server is running on port http://localhost:${port}`)
 })
