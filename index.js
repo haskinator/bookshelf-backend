@@ -9,9 +9,11 @@ app.use(express.json());
 
 //IMPORT ROUTES
 const userRouters = require('./routes/user-routes')
+const bookRouters = require('./routes/book-routes')
 
 //USE ROUTES
 app.use('/',userRouters)
+app.use('/',bookRouters)
 
 app.get('/',(req,res)=>{
     res.status(200).json({Message: 'Welcome to the server'})
