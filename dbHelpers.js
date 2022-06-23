@@ -58,11 +58,10 @@ function getUserBooks(user_id) {
         'books.pages as PageNumber',
         'books.tag as UserTag',
         'books.identifier as Identifier',
-        'books.imageUrl as ImageUrl',
-        'books.created_at as Created_at'
+        'books.imageUrl as ImageUrl'
     )
     .where({user_id:user_id})
-    .orderBy('created_at','desc')
+
 }
 
 
