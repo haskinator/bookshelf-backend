@@ -156,7 +156,7 @@ router.get('/users/:id/books/:identifier',(req,res)=>{
         res.status(200).json(book)
     })
 
-    .catch(err=>res.status(500).json(err))
+    .catch(err=>res.status(400).json(err))
     
     })
     
