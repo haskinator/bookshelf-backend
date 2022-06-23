@@ -37,6 +37,15 @@ function removeUser(id) {
     .del()
    }
 
+function deleteUserBookByBookId(id,identifier) {
+    return db('books')
+    .where({
+        user_id:id,
+        identifier:identifier
+    })
+    .del()
+}
+
 function getUserBooks(user_id) {
     return db('users')
     .join('books','users.id','books.user_id')
@@ -87,6 +96,7 @@ module.exports={
     addBook,
     addTag,
     getAllBooks,
-    getUserBookByBookId
+    getUserBookByBookId,
+    deleteUserBookByBookId
 
 }

@@ -162,5 +162,26 @@ router.get('/users/:id/books/:identifier',(req,res)=>{
     
 })
 
+router.delete('/users/:id/books/:identifier',(req,res)=>{
+    const{id} = req.params
+    const{identifier} = req.params
+
+    Bookshelf.findUserByUserId(id)
+    .then(user=>{
+        if(!user){
+            res.status(400).json({Message:"User does not exists"})
+        }
+
+    Bookshelf.deleteUserBookByBookId(id,identifier)
+    .then(book =>{
+        res.status(200).json({Message:"Book deleted"})
+    })
+
+    .catch(err=>res.status(400).json(err))
+    
+    })
+    
+})
+
 
 module.exports = router;
