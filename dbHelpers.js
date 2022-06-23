@@ -23,6 +23,14 @@ function getAllBooks() {
     return db('books').orderBy('id','desc')
 }
 
+function getUserBookByBookId(id,identifier) {
+    return db("books")
+    .where({
+        user_id:id,
+        identifier:identifier
+    })
+}
+
 function removeUser(id) {
     return db('users')
     .where({id:id})
@@ -78,6 +86,7 @@ module.exports={
     findUserByUserId,
     addBook,
     addTag,
-    getAllBooks
+    getAllBooks,
+    getUserBookByBookId
 
 }

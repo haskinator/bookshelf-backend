@@ -141,5 +141,26 @@ router.patch('/users/:id/books/:identifier',(req,res)=>{
 
 })
 
+router.get('/users/:id/books/:identifier',(req,res)=>{
+    const{id} = req.params
+    const{identifier} = req.params
+
+    Bookshelf.findUserByUserId(id)
+    .then(user=>{
+        if(!user){
+            res.status(400).json({Message:"User does not exists"})
+        }
+
+    Bookshelf.getUserBookByBookId(id,identifier)
+    .then(book =>{
+        res.status(200).json(book)
+    })
+
+    .catch(err=>res.status(500).json(err))
+    
+    })
+    
+})
+
 
 module.exports = router;
